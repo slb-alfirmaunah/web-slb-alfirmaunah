@@ -4,7 +4,8 @@ export default config({
   // --- MENGUBAH MODE LOKAL KE CLOUD (GITHUB) ---
   storage: { 
     kind: 'github',
-    repo: 'ppradanaid-star/web-slb-alfirmaunah'
+    // REVISI TARGET REPOSITORI KE AKUN BARU
+    repo: 'slb-alfirmaunah/web-slb-alfirmaunah'
   },
   // ---------------------------------------------
   
