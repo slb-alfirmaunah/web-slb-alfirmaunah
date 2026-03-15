@@ -1,7 +1,13 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  storage: { kind: 'local' },
+  // --- MENGUBAH MODE LOKAL KE CLOUD (GITHUB) ---
+  storage: { 
+    kind: 'github',
+    repo: 'ppradanaid-star/web-slb-alfirmaunah'
+  },
+  // ---------------------------------------------
+  
   collections: {
     berita: collection({
       label: 'Berita',
@@ -106,6 +112,24 @@ export default config({
         }),
       },
     }),
+    
+    // --- MENGEMBALIKAN FITUR GALERI VIDEO ---
+    galeriVideo: collection({
+      label: 'Galeri Video',
+      slugField: 'judul',
+      path: 'src/content/galeri-video/*',
+      format: { data: 'json' },
+      schema: {
+        judul: fields.slug({ name: { label: 'Judul Video' } }),
+        tanggal: fields.date({ label: 'Tanggal Publikasi' }),
+        youtubeId: fields.text({ 
+          label: 'ID Video YouTube', 
+          description: 'Contoh: Jika link video adalah https://www.youtube.com/watch?v=dQw4w9WgXcQ, maka masukkan HANYA kodenya saja: dQw4w9WgXcQ' 
+        }),
+        deskripsi: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
+      },
+    }),
+    // ----------------------------------------
   },
   singletons: {
     profilSekolah: singleton({
