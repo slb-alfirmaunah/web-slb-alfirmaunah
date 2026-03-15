@@ -1,0 +1,211 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/container.astro";
+import Hero from "../components/hero.astro";
+import Sambutan from "../components/sambutan.astro";
+import BeritaTerbaru from "../components/berita-terbaru.astro";
+
+// 1. DATA FETCHING
+import { getCollection } from 'astro:content';
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+
+const reader = createReader(process.cwd(), keystaticConfig);
+
+let profil = null;
+try { 
+  profil = await reader.singletons.profilSekolah.read(); 
+} catch (e) {
+  console.error("Gagal memuat profil:", e);
+}
+
+const semuaTestimoni = await getCollection('testimoni');
+const semuaFasilitas = await getCollection('fasilitas');
+---
+
+<Layout title="Beranda | SLB Al-Firmaunah" isHome={true}>
+  <Hero />
+
+  <section class="py-12 bg-white">
+    <Container>
+      <Sambutan />
+      
+      <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-slate-100 pt-10">
+        <div class="flex flex-col items-center group text-center">
+          <div class="text-4xl md:text-5xl font-black text-slate-900 mb-1 tracking-tighter">
+            <span class="counter" data-target="2019">0</span>
+          </div>
+          <div class="h-1.5 w-6 bg-red-600 mb-3 rounded-full group-hover:w-12 transition-all duration-500"></div>
+          <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Sejak Tahun</p>
+        </div>
+        
+        <div class="flex flex-col items-center group text-center">
+          <div class="text-4xl md:text-5xl font-black text-slate-900 mb-1 tracking-tighter flex items-baseline">
+            <span class="counter" data-target="38">0</span>
+            <span class="text-red-600 text-2xl ml-1">+</span>
+          </div>
+          <div class="h-1.5 w-6 bg-red-600 mb-3 rounded-full group-hover:w-12 transition-all duration-500"></div>
+          <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Murid Aktif</p>
+        </div>
+
+        <div class="flex flex-col items-center group text-center">
+          <div class="text-4xl md:text-5xl font-black text-slate-900 mb-1 tracking-tighter flex items-baseline">
+            <span class="counter" data-target="5">0</span>
+            <span class="text-red-600 text-2xl ml-1">+</span>
+          </div>
+          <div class="h-1.5 w-6 bg-red-600 mb-3 rounded-full group-hover:w-12 transition-all duration-500"></div>
+          <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Tenaga Pendidik</p>
+        </div>
+
+        <div class="flex flex-col items-center group text-center">
+          <div class="text-4xl md:text-5xl font-black text-red-600 mb-1 tracking-tighter">B</div>
+          <div class="h-1.5 w-6 bg-red-600 mb-3 rounded-full group-hover:w-12 transition-all duration-500"></div>
+          <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Akreditasi</p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {profil && (
+    <section class="py-12 bg-slate-50 border-y border-slate-100">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div class="space-y-5">
+            <div>
+              <span class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] mb-2 block">Identitas & Visi</span>
+              <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight uppercase leading-tight">
+                Membangun Generasi <br/> <span class="text-red-600 italic">Mandiri & Berkarakter</span>
+              </h2>
+            </div>
+            <p class="text-xl text-slate-600 font-medium leading-relaxed italic border-l-4 border-red-600 pl-6 py-1">
+              "{profil.visi}"
+            </p>
+          </div>
+          
+          <div class="bg-white p-7 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+            <h3 class="text-[11px] font-black mb-5 uppercase tracking-[0.2em] text-slate-400 border-b border-slate-50 pb-3">Misi Strategis</h3>
+            <ul class="space-y-3">
+              {profil.misi?.slice(0, 4).map((item, index) => (
+                <li class="flex gap-4 items-start group">
+                  <span class="flex-shrink-0 w-6 h-6 rounded bg-red-600 flex items-center justify-center font-black text-[10px] text-white">
+                    {index + 1}
+                  </span>
+                  <p class="text-slate-600 text-sm font-semibold leading-relaxed group-hover:text-red-600 transition-colors uppercase tracking-tight">
+                    {typeof item === 'object' ? item.teks : item}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <a href="/profil/sekolah" class="mt-6 inline-block text-[10px] font-black uppercase tracking-widest text-red-600 hover:translate-x-2 transition-transform">Lihat Selengkapnya →</a>
+          </div>
+        </div>
+      </Container>
+    </section>
+  )}
+
+  {semuaFasilitas.length > 0 && (
+    <section class="py-16 bg-white">
+      <Container>
+        <div class="mb-8 flex justify-between items-end">
+          <div>
+            <span class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] mb-2 block">Environment</span>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Fasilitas <span class="text-red-600 italic text-3xl">Sekolah</span></h2>
+          </div>
+          <div class="hidden md:block w-32 h-1 bg-slate-100 rounded-full mb-4"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {semuaFasilitas.map((item) => (
+            <div class="group cursor-default">
+              <div class="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-100 mb-3 shadow-md border border-slate-100 relative">
+                <img 
+                  src={item.data.gambar} 
+                  alt={item.data.nama} 
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
+              <h3 class="font-black text-slate-900 text-sm uppercase tracking-tight group-hover:text-red-600 transition-colors">
+                {item.data.nama}
+              </h3>
+              <p class="text-[11px] text-slate-500 leading-relaxed mt-1 line-clamp-2 font-medium">
+                {item.data.deskripsi}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  )}
+  
+  <section class="py-16 bg-slate-50 border-y border-slate-100 relative overflow-hidden">
+    <Container relative z-10>
+      <BeritaTerbaru />
+    </Container>
+  </section>
+
+  <section class="py-16 bg-white">
+    <Container>
+      <div class="flex flex-col items-center text-center mb-10">
+        <span class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] mb-2">Social Proof</span>
+        <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Buku Tamu & <span class="text-red-600">Apresiasi</span></h2>
+        <div class="w-16 h-1.5 bg-red-600 mt-4 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {semuaTestimoni.slice(0, 3).map((item) => (
+          <div class="bg-slate-50 p-7 rounded-[2rem] border border-slate-100 flex flex-col group hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
+            <div class="text-red-600 mb-3 opacity-20">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9125 16 16.0171 16H19.0171V14.5C19.0171 11.4624 16.5547 9 13.5171 9H12.0171V7H13.5171C17.6592 7 21.0171 10.3579 21.0171 14.5V21H14.017ZM3.01709 21V14.5C3.01709 10.3579 6.375 7 10.5171 7H12.0171V9H10.5171C7.47953 9 5.01709 11.4624 5.01709 14.5V16H8.01709C9.12166 16 10.0171 16.8954 10.0171 18V21H3.01709Z"/></svg>
+            </div>
+            <p class="text-slate-600 italic mb-6 text-sm leading-relaxed font-medium">"{item.data?.pesan}"</p>
+            <div class="mt-auto pt-5 flex items-center gap-4 border-t border-slate-200/50">
+              <div class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-lg shadow-md shadow-red-600/20">
+                {item.data?.nama?.charAt(0)}
+              </div>
+              <div class="flex flex-col text-left">
+                <h4 class="text-slate-900 font-bold text-sm tracking-tight">{item.data?.nama}</h4>
+                <span class="text-red-600 text-[9px] uppercase font-black tracking-widest">{item.data?.peran}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+</Layout>
+
+<script is:inline>
+  const animateCounter = (el) => {
+    const target = +el.getAttribute('data-target');
+    const duration = 2500;
+    const totalFrames = 120;
+    let frame = 0;
+
+    const count = () => {
+      frame++;
+      const progress = frame / totalFrames;
+      const currentVal = Math.round(target * (1 - Math.pow(2, -10 * progress)));
+      el.textContent = currentVal.toString();
+      
+      if (frame < totalFrames) {
+        requestAnimationFrame(count);
+      } else {
+        el.textContent = target;
+      }
+    };
+    count();
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.counter').forEach(c => animateCounter(c));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const statsGrid = document.querySelector('.counter')?.closest('div.grid');
+  if (statsGrid) observer.observe(statsGrid);
+</script>

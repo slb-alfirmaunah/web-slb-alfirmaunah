@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+const semuaBerita = await getCollection('berita');
+
+// Kita petakan ID persis seperti apa yang dilihat Astro
+const daftarIdMentah = semuaBerita.map(b => b.id);
+const daftarIdBersih = semuaBerita.map(b => b.id.replace(/\/data$/, ''));
+---
+
+<html>
+  <body style="padding: 50px; font-family: monospace; background: #1e1e1e; color: #00ff00;">
+    <h2>=== ANALISIS DATA BERITA ASTRO ===</h2>
+    
+    <h3>1. Jumlah Berita Terdeteksi:</h3>
+    <p>{semuaBerita.length} Artikel</p>
+
+    <h3>2. ID Asli (Mentah) dari Database Keystatic:</h3>
+    <pre>{JSON.stringify(daftarIdMentah, null, 2)}</pre>
+
+    <h3>3. ID Bersih (Untuk URL):</h3>
+    <pre>{JSON.stringify(daftarIdBersih, null, 2)}</pre>
+  </body>
+</html>

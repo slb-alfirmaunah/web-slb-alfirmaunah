@@ -1,0 +1,36 @@
+{
+  "judulTahunAjaran": "Tahun Ajaran 2026/2027",
+  "posterTahunan": "/images/ppdb/posterTahunan.png",
+  "brosurPdf": "/files/ppdb/brosurPdf.pdf",
+  "syarat": [
+    {
+      "teks": "tes1"
+    },
+    {
+      "teks": "tes2 asdad",
+      "catatan": "asdadad"
+    },
+    {
+      "teks": "asdad",
+      "catatan": "addad"
+    }
+  ],
+  "alur": [
+    {
+      "judul": "asdad",
+      "deskripsi": "asdadddd"
+    },
+    {
+      "judul": "asdada",
+      "deskripsi": "sadadadda"
+    },
+    {
+      "judul": "asdad",
+      "deskripsi": "adaasdsda"
+    }
+  ],
+  "whatsappNumber": "628123456789",
+  "pesanWA": "Halo Admin SLB Al-Firmaunah, saya ingin menanyakan informasi pendaftaran siswa baru.",
+  "jadwalHari": "Senin - Jum'at",
+  "jadwalJam": "07.00 - 15.00"
+}

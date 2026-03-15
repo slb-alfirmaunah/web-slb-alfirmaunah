@@ -1,0 +1,67 @@
+---
+import { SEO } from "astro-seo";
+import Footer from "../components/footer.astro"; 
+import Navbar from "../components/navbar/navbar.astro";
+import "@fontsource-variable/inter/index.css";
+import "@fontsource-variable/bricolage-grotesque";
+import "../styles/global.css";
+
+// 1. TAMBAHKAN isHome di interface Props agar TypeScript tidak protes
+export interface Props {
+  title: string;
+  isHome?: boolean; // Tanda tanya (?) berarti opsional
+}
+
+// 2. TANGKAP isHome dari Astro.props (Defaultnya false)
+const { title, isHome = false } = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString() : 'http://localhost:4321';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
+
+const resolvedImageWithDomain = new URL(
+  "/opengraph.jpg",
+  siteUrl
+).toString();
+
+const makeTitle = title
+  ? title + " | " + "SMAN 3 Malang"
+  : "SMAN 3 Malang - Kampus Bhawikarsu";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <SEO
+      title={makeTitle}
+      description="Website Resmi SMA Negeri 3 Malang - Kampus Bhawikarsu."
+      canonical={canonicalURL}
+      twitter={{
+        creator: "@sman3malang",
+        card: "summary_large_image",
+      }}
+      openGraph={{
+        basic: {
+          url: canonicalURL,
+          type: "website",
+          title: makeTitle,
+          image: resolvedImageWithDomain,
+        },
+      }}
+    />
+  </head>
+  <body>
+    <Navbar isHome={isHome} />
+    
+    <slot />
+    <Footer />
+    <style is:global>
+      img {
+        content-visibility: auto;
+      }
+    </style>
+  </body>
+</html>

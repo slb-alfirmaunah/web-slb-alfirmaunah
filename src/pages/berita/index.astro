@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/container.astro';
+import { getCollection } from 'astro:content';
+
+// 1. Ambil semua data dari koleksi 'berita'
+const semuaBerita = await getCollection('berita');
+
+// 2. Logika Pengurutan: Sortir berdasarkan tanggal terbaru (Descending)
+const beritaTerurut = semuaBerita.sort((a, b) => {
+  const waktuA = a.data.tanggal ? new Date(a.data.tanggal).getTime() : 0;
+  const waktuB = b.data.tanggal ? new Date(b.data.tanggal).getTime() : 0;
+  return waktuB - waktuA;
+});
+---
+
+<Layout title="Berita & Pengumuman | SLB Al-Firmaunah">
+  <main class="bg-slate-50 min-h-screen pb-20">
+    
+    <header class="bg-red-950 text-white pt-40 pb-24 mb-16 relative overflow-hidden">
+      <div class="absolute inset-0 bg-red-600 opacity-5 pointer-events-none"></div>
+      <Container relative z-10>
+        <div class="max-w-3xl">
+          <span class="text-red-500 font-black tracking-[0.3em] uppercase text-xs mb-4 block">
+            Update Terkini
+          </span>
+          <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tighter leading-tight text-white">
+            Berita & <span class="text-red-500">Pengumuman</span>
+          </h1>
+          <p class="text-lg text-red-100/70 leading-relaxed font-medium">
+            Informasi resmi mengenai kegiatan sekolah, prestasi peserta didik, dan pengumuman penting SLB Al-Firmaunah.
+          </p>
+        </div>
+      </Container>
+    </header>
+
+    <Container>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {beritaTerurut.length > 0 ? (
+          beritaTerurut.map((post) => (
+            <article class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden hover:shadow-red-900/10 transition-all duration-300 flex flex-col group hover:-translate-y-2">
+              
+              <a href={`/berita/${post.id}`} class="block relative h-60 overflow-hidden bg-slate-100">
+                <img 
+                  src={post.data.gambar} 
+                  alt={post.data.judul}
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  onerror="this.src='https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800'"
+                />
+                {post.data.kategori && (
+                  <div class="absolute top-6 left-6">
+                    <span class="bg-red-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                      {post.data.kategori}
+                    </span>
+                  </div>
+                )}
+              </a>
+
+              <div class="p-8 md:p-10 flex flex-col flex-grow border-b-[8px] border-transparent group-hover:border-red-600 transition-all">
+                <time class="text-slate-400 text-[10px] font-black tracking-[0.2em] uppercase mb-4 block">
+                   {new Date(post.data.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
+                </time>
+                
+                <h2 class="text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-red-600 transition-colors line-clamp-2">
+                  <a href={`/berita/${post.id}`}>
+                    {post.data.judul}
+                  </a>
+                </h2>
+                
+                <p class="text-slate-500 text-sm mb-8 line-clamp-3 leading-relaxed">
+                  {post.data.deskripsi}
+                </p>
+                
+                <div class="mt-auto">
+                  <a href={`/berita/${post.id}`} class="text-red-600 text-xs font-black uppercase tracking-widest inline-flex items-center gap-2 group-hover:gap-4 transition-all">
+                    Baca Selengkapnya <span class="text-lg">→</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))
+        ) : (
+          <div class="col-span-full py-32 text-center bg-white rounded-[3rem] border-4 border-dashed border-slate-100">
+            <p class="text-slate-400 font-black uppercase tracking-widest text-sm">Belum ada berita yang diterbitkan.</p>
+          </div>
+        )}
+      </div>
+    </Container>
+  </main>
+</Layout>

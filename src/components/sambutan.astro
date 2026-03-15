@@ -1,0 +1,45 @@
+---
+// src/components/sambutan.astro
+---
+<div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20 py-10">
+  
+  <div class="w-full md:w-5/12 relative group">
+    <div class="aspect-[4/5] rounded-3xl overflow-hidden bg-slate-100 relative z-10 shadow-2xl shadow-red-900/10">
+      <img 
+        src="/foto-kepsek.jpeg" 
+        alt="Kepala Sekolah SLB Al-Firmaunah" 
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+        onerror="this.src='https://placehold.co/400x500/f8fafc/94a3b8?text=Foto+Kepsek'" 
+      />
+    </div>
+    
+    <div class="absolute -bottom-6 -right-6 w-full h-full rounded-3xl border-4 border-red-600 -z-10 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+    <div class="absolute -top-6 -left-6 w-32 h-32 bg-red-50 rounded-full -z-10 opacity-60"></div>
+  </div>
+  
+  <div class="w-full md:w-7/12 space-y-8">
+    <div>
+      <span class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] mb-2 block">
+        Leadership Message
+      </span>
+      <h2 class="text-3xl md:text-5xl font-black text-slate-900 mt-2 tracking-tighter leading-tight uppercase">
+        Selamat Datang di <br/> <span class="text-red-600 italic">SLB Al-Firmaunah</span>
+      </h2>
+    </div>
+    
+    <div class="space-y-6 text-slate-600 leading-relaxed text-sm md:text-base font-medium">
+      <p class="italic border-l-4 border-red-600 pl-6 py-1">
+        "Puji syukur kami panjatkan ke hadirat Tuhan Yang Maha Esa atas berdirinya portal resmi SLB Al-Firmaunah. Kami berkomitmen penuh untuk memberikan layanan pendidikan inklusif, membina kemandirian, dan mengembangkan bakat setiap peserta didik berkebutuhan khusus dengan penuh dedikasi dan kasih sayang."
+      </p>
+      <p>
+        Melalui website ini, kami berharap dapat menjembatani informasi antara pihak sekolah, orang tua, dan masyarakat luas agar tercipta sinergi yang progresif dalam mendukung perkembangan anak-anak hebat kita menuju masa depan yang cerah.
+      </p>
+    </div>
+    
+    <div class="pt-8 border-t border-slate-100 flex flex-col">
+      <h4 class="font-black text-slate-900 text-xl tracking-tight uppercase">Evi Yuli Hastuti, S.Psi, S.Pd</h4>
+      <p class="text-red-600 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Kepala SLB Al-Firmaunah</p>
+    </div>
+  </div>
+
+</div>

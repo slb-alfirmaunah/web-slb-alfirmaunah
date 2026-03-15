@@ -1,0 +1,89 @@
+---
+// Navbar.astro
+---
+<nav id="main-navbar" class="fixed top-0 w-full z-[100] transition-all duration-500 py-6 px-4 border-b border-transparent">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    
+    <a href="/" class="flex items-center gap-3 group">
+      <img 
+        id="logo-img" 
+        src="/logo-white.png" 
+        alt="Logo SLB Al-Firmaunah" 
+        class="h-12 md:h-16 transition-all duration-500 object-contain" 
+        onerror="this.style.opacity='0'"
+      />
+      <div id="logo-text" class="text-white transition-colors duration-500">
+        <h1 class="font-black leading-none text-xl md:text-2xl uppercase">SLB Al-Firmaunah</h1>
+        <p class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase opacity-80">Mendidik dengan Hati</p>
+      </div>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-8">
+      
+      <div id="nav-links" class="flex items-center gap-8 text-white font-bold uppercase text-sm transition-colors duration-500">
+        <a href="/" class="hover:text-red-500 transition-colors">Beranda</a>
+        
+        <div class="relative group py-4">
+          <button class="hover:text-red-500 transition-colors uppercase font-bold flex items-center gap-1">
+            Profil
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          
+          <div class="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 overflow-hidden text-slate-700 normal-case border border-slate-100">
+            <a href="/profil/sekolah" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors font-semibold">Identitas Sekolah</a>
+            <a href="/profil/guru" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors border-t border-slate-50 font-semibold">Daftar Guru & Staf</a>
+            <a href="/profil/siswa" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors border-t border-slate-50 font-semibold">Data Peserta Didik</a>
+          </div>
+        </div>
+
+        <a href="/berita" class="hover:text-red-500 transition-colors">Berita</a>
+        <a href="/fasilitas" class="hover:text-red-500 transition-colors">Fasilitas</a>
+        <a href="/galeri" class="hover:text-red-500 transition-colors">Galeri</a>
+      </div>
+
+      <a href="/ppdb" class="bg-red-600 hover:bg-red-700 text-white px-7 py-2.5 rounded-full font-black tracking-widest uppercase text-sm transition-all shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:-translate-y-0.5 border-2 border-transparent">
+        PPDB
+      </a>
+
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  const nav = document.querySelector('#main-navbar');
+  const logoImg = document.querySelector('#logo-img');
+  const logoText = document.querySelector('#logo-text');
+  const navLinks = document.querySelector('#nav-links');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      // Aktifkan Mode Terang (Scrolled)
+      nav.classList.add('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
+      nav.classList.remove('py-6', 'border-transparent');
+      
+      // Ganti Logo ke Dark
+      if (logoImg) logoImg.src = "/logo-dark.png";
+      
+      logoText.classList.add('text-slate-900');
+      logoText.classList.remove('text-white');
+      
+      navLinks.classList.add('text-slate-700');
+      navLinks.classList.remove('text-white');
+    } else {
+      // Kembali ke Mode Transparan (Top)
+      nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
+      nav.classList.add('py-6', 'border-transparent');
+      
+      // Ganti Logo ke White
+      if (logoImg) logoImg.src = "/logo-white.png";
+      
+      logoText.classList.remove('text-slate-900');
+      logoText.classList.add('text-white');
+      
+      navLinks.classList.remove('text-slate-700');
+      navLinks.classList.add('text-white');
+    }
+  });
+</script>

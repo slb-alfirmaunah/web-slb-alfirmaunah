@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/container.astro";
+---
+
+<Layout title="Galeri Kegiatan | SLB Al-Firmaunah" isHome={false}>
+  
+  <header class="bg-red-950 text-white pt-40 pb-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-red-600 opacity-5 pointer-events-none"></div>
+    <Container relative z-10>
+      <div class="max-w-3xl">
+        <span class="text-red-500 font-black tracking-[0.3em] uppercase text-xs mb-4 block">
+          Dokumentasi Otomatis
+        </span>
+        <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tighter leading-tight text-white">
+          Galeri <span class="text-red-500">Instagram</span>
+        </h1>
+        <p class="text-lg text-red-100/70 leading-relaxed font-medium">
+          Pantau langsung pembaruan aktivitas, momen belajar, dan kreativitas peserta didik SLB Al-Firmaunah dari feed media sosial resmi kami.
+        </p>
+      </div>
+    </Container>
+  </header>
+
+  <section class="py-24 bg-slate-50 min-h-screen">
+    <Container>
+      
+      <div class="bg-white rounded-[3rem] p-8 md:p-14 shadow-xl shadow-slate-200/50 border border-slate-100">
+        
+        <div class="mb-12 text-center flex flex-col items-center">
+          <div class="w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <h2 class="text-3xl font-black text-slate-900 tracking-tight mb-4 uppercase">Sorotan <span class="text-red-600">@slb.al.fir.maunah</span></h2>
+          <div class="w-16 h-1.5 bg-red-600 rounded-full"></div>
+        </div>
+
+        <div class="w-full min-h-[500px] relative z-10 flex justify-center">
+          
+          <script src="https://elfsightcdn.com/platform.js" async is:inline></script>
+          
+          <div class="elfsight-app-c7317ae4-e411-44ff-b03b-044084c62d8f" data-elfsight-app-lazy></div>
+          
+        </div>
+
+        <div class="mt-14 text-center">
+          <a href="https://www.instagram.com/slb.al.fir.maunah/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-red-600 text-white px-10 py-4 rounded-full font-black uppercase tracking-widest hover:bg-red-700 hover:-translate-y-1 transition-all shadow-xl shadow-red-900/20 group">
+            Buka Langsung di Aplikasi 
+            <span class="group-hover:translate-x-1 transition-transform text-lg">&rarr;</span>
+          </a>
+        </div>
+
+      </div>
+
+    </Container>
+  </section>
+</Layout>

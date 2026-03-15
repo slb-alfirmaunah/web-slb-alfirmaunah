@@ -1,0 +1,113 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Container from "../../components/container.astro";
+import { getCollection } from 'astro:content';
+
+let semuaSiswa = [];
+try {
+  semuaSiswa = await getCollection('siswa') || [];
+} catch (error) {
+  console.error("Gagal memuat koleksi siswa:", error);
+}
+
+// Analisis & Pemisahan Data Berdasarkan Tingkat Pendidikan
+const tklb = semuaSiswa.filter(siswa => siswa.data.tingkat === 'TKLB');
+const sdlb = semuaSiswa.filter(siswa => siswa.data.tingkat === 'SDLB');
+const smplb = semuaSiswa.filter(siswa => siswa.data.tingkat === 'SMPLB');
+const smalb = semuaSiswa.filter(siswa => siswa.data.tingkat === 'SMALB');
+
+// Array bantuan untuk merender UI secara dinamis
+const kategoriList = [
+  { judul: "TKLB (Taman Kanak-Kanak Luar Biasa)", data: tklb },
+  { judul: "SDLB (Sekolah Dasar Luar Biasa)", data: sdlb },
+  { judul: "SMPLB (Sekolah Menengah Pertama Luar Biasa)", data: smplb },
+  { judul: "SMALB (Sekolah Menengah Atas Luar Biasa)", data: smalb },
+];
+---
+
+<Layout title="Data Peserta Didik | SLB Al-Firmaunah" isHome={false}>
+  
+  <div class="w-full py-20 bg-red-950 text-center px-4 relative overflow-hidden">
+    <div class="absolute inset-0 bg-red-600 opacity-5 pointer-events-none"></div>
+    <Container>
+      <span class="text-red-500 font-black tracking-[0.3em] uppercase text-sm mb-4 block">
+        Administrasi Siswa
+      </span>
+      <h1 class="text-4xl md:text-5xl font-black text-white tracking-tighter">
+        Data Peserta Didik
+      </h1>
+      <div class="w-24 h-1.5 bg-red-600 mx-auto mt-6 rounded-full"></div>
+    </Container>
+  </div>
+
+  <section class="py-16 bg-slate-50 min-h-screen">
+    <Container>
+      
+      {semuaSiswa.length > 0 ? (
+        <div class="space-y-24">
+          {kategoriList.map((kategori) => (
+            /* Logika: Hanya render bagian jenjang jika ada datanya */
+            kategori.data.length > 0 && (
+              <div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b-4 border-red-600 pb-4">
+                  <h2 class="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">
+                    {kategori.judul}
+                  </h2>
+                  <span class="bg-red-100 text-red-800 text-sm font-black px-5 py-2 rounded-full mt-4 md:mt-0 shadow-sm border border-red-200">
+                    {kategori.data.length} Peserta Didik
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {kategori.data.map((siswa) => (
+                    <div class="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border-t-8 border-red-600 hover:shadow-red-900/10 hover:-translate-y-2 transition-all duration-300 group">
+                      
+                      <div class="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
+                        <div class="space-y-1">
+                          <h3 class="text-xl font-black text-slate-900 leading-tight group-hover:text-red-600 transition-colors">
+                            {siswa.data.nama}
+                          </h3>
+                        </div>
+                        <div class="bg-slate-100 text-slate-600 text-[10px] font-black px-3 py-1.5 rounded-lg uppercase tracking-widest whitespace-nowrap border border-slate-200">
+                          Kelas {siswa.data.kelas}
+                        </div>
+                      </div>
+                      
+                      <div class="space-y-4 text-sm font-medium">
+                        {siswa.data.nisn && (
+                          <div class="flex justify-between items-center">
+                            <span class="text-slate-400 uppercase tracking-widest text-[10px] font-bold">NIS / NISN</span>
+                            <span class="font-black text-slate-700 bg-slate-50 px-3 py-1 rounded-md">{siswa.data.nisn}</span>
+                          </div>
+                        )}
+                        {siswa.data.kekhususan && (
+                          <div class="flex flex-col gap-2 pt-2">
+                            <span class="text-slate-400 uppercase tracking-widest text-[10px] font-bold">Kekhususan</span>
+                            <span class="font-bold text-red-700 bg-red-50 px-4 py-2 rounded-xl text-center border border-red-100">
+                              {siswa.data.kekhususan}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-24 bg-white rounded-[3rem] border-4 border-dashed border-slate-200">
+          <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">Database siswa belum tersedia di Keystatic.</p>
+        </div>
+      )}
+
+    </Container>
+  </section>
+</Layout>

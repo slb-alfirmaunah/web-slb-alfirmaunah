@@ -1,0 +1,76 @@
+---
+// src/components/hero.astro
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const slidesData = await reader.collections.slideshow.all();
+const slides = slidesData.map(s => s.entry).sort((a, b) => (a.urutan || 0) - (b.urutan || 0));
+---
+
+<section class="relative w-full bg-black overflow-hidden group" id="hero-slideshow">
+  <div class="flex transition-transform duration-700 ease-in-out" id="hero-wrapper">
+    {slides.map((slide) => (
+      <div class="w-full flex-shrink-0 relative">
+        <div class="w-full aspect-video">
+          <img 
+            src={slide.gambar} 
+            alt={slide.judul || "Slideshow"} 
+            class="w-full h-full object-contain bg-black" 
+          />
+        </div>
+
+        {/* OVERLAY: Hanya muncul jika ada teks */}
+        {(slide.judul || slide.subjudul) && (
+          <div class="absolute inset-0 bg-black/40 flex items-center justify-center p-6 text-center">
+            <div class="max-w-4xl">
+              {slide.judul && <h2 class="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter mb-4">{slide.judul}</h2>}
+              {slide.subjudul && <p class="text-lg md:text-2xl text-white/90 font-medium italic">{slide.subjudul}</p>}
+            </div>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  {/* Tombol Navigasi */}
+  {slides.length > 1 && (
+    <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
+      <button id="hero-prev" class="pointer-events-auto bg-white/10 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button id="hero-next" class="pointer-events-auto bg-white/10 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  )}
+</section>
+
+<script is:inline>
+  const wrapper = document.querySelector('#hero-wrapper');
+  const slidesCount = document.querySelectorAll('#hero-wrapper > div').length;
+  const prevBtn = document.querySelector('#hero-prev');
+  const nextBtn = document.querySelector('#hero-next');
+  let currentIndex = 0;
+
+  function move() {
+    if (wrapper) wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  nextBtn?.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slidesCount;
+    move();
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slidesCount) % slidesCount;
+    move();
+  });
+
+  if (slidesCount > 1) {
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % slidesCount;
+      move();
+    }, 5000);
+  }
+</script>

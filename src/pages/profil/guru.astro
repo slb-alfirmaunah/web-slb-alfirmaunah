@@ -1,0 +1,139 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Container from "../../components/container.astro";
+import { getCollection } from 'astro:content';
+
+// Mengambil data guru dari koleksi Keystatic
+let semuaGuru = [];
+try {
+  semuaGuru = await getCollection('guru') || [];
+} catch (error) {
+  console.error("Gagal memuat data guru:", error);
+}
+
+// ALGORITMA PENGURUTAN HIERARKI JABATAN
+semuaGuru.sort((a, b) => {
+  const jabatanA = (a.data.jabatan || "").toLowerCase();
+  const jabatanB = (b.data.jabatan || "").toLowerCase();
+
+  const getLevel = (jabatan) => {
+    if (jabatan.includes('kepala sekolah') || jabatan.includes('kepsek')) return 1;
+    if (jabatan.includes('wakil')) return 2;
+    if (jabatan.includes('koordinator')) return 3;
+    if (jabatan.includes('guru') || jabatan.includes('wali kelas')) return 4;
+    if (jabatan.includes('staf') || jabatan.includes('staff') || jabatan.includes('tata usaha') || jabatan.includes('tu') || jabatan.includes('admin')) return 5;
+    return 6;
+  };
+
+  const levelA = getLevel(jabatanA);
+  const levelB = getLevel(jabatanB);
+
+  if (levelA !== levelB) {
+    return levelA - levelB;
+  }
+  
+  return a.data.nama.localeCompare(b.data.nama);
+});
+---
+
+<Layout title="Tenaga Pendidik & Staf | SLB Al-Firmaunah" isHome={false}>
+  
+  <header class="w-full pt-40 pb-20 bg-red-950 text-center px-4 relative overflow-hidden mb-12">
+    <div class="absolute inset-0 bg-red-600 opacity-5 pointer-events-none"></div>
+    <Container relative z-10>
+      <span class="text-red-500 font-black tracking-[0.3em] uppercase text-xs mb-4 block">
+        Sumber Daya Manusia
+      </span>
+      <h1 class="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase">
+        Guru & Tenaga Kependidikan
+      </h1>
+      <div class="w-24 h-1.5 bg-red-600 mx-auto mt-6 rounded-full"></div>
+    </Container>
+  </header>
+
+  <section class="py-16 bg-slate-50 min-h-screen">
+    <Container>
+      
+      {semuaGuru.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+          {semuaGuru.map((guru) => (
+            <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl shadow-slate-200/60 border border-slate-100 group hover:-translate-y-2 transition-all duration-500 flex flex-col relative">
+              
+              <div class="aspect-[4/5] overflow-hidden bg-slate-100 relative">
+                {guru.data.foto ? (
+                  <img 
+                    src={guru.data.foto} 
+                    alt={guru.data.nama} 
+                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center bg-red-50 text-red-200">
+                    <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                )}
+                
+                <div class="absolute top-4 left-4 z-20">
+                  <span class="bg-red-600/90 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shadow-lg">
+                    {guru.data.jabatan}
+                  </span>
+                </div>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </div>
+
+              <div class="p-8 text-center flex-grow flex flex-col items-center border-b-[6px] border-red-600">
+                <h3 class="text-lg font-black text-slate-900 leading-tight mb-4 group-hover:text-red-600 transition-colors">
+                  {guru.data.nama}
+                </h3>
+                
+                <div class="mt-auto w-full space-y-2">
+                  {guru.data.pendidikan && (
+                    <div class="pt-3 border-t border-slate-100 w-full text-xs text-slate-500 font-bold flex flex-col items-center gap-1">
+                      <span class="text-[9px] uppercase tracking-widest text-red-400">Pendidikan</span>
+                      {guru.data.pendidikan}
+                    </div>
+                  )}
+
+                  {guru.data.nip && (
+                    <div class="pt-3 border-t border-slate-100 w-full text-xs text-slate-400 font-medium font-mono tracking-tight">
+                      <span class="text-[9px] uppercase tracking-widest text-slate-300 block mb-0.5 font-sans">NIP / NUPTK</span>
+                      {guru.data.nip}
+                    </div>
+                  )}
+                </div>
+
+              </div>
+              
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-24 bg-white rounded-[3rem] border-4 border-dashed border-slate-100">
+          <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+             <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+             </svg>
+          </div>
+          <p class="text-slate-400 font-bold uppercase tracking-widest text-sm">Data guru belum diunggah.</p>
+        </div>
+      )}
+
+    </Container>
+  </section>
+
+  <section class="py-20 bg-red-600 text-white border-b-8 border-red-900">
+    <Container>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+        <h2 class="text-2xl md:text-3xl font-black tracking-tight text-center md:text-left uppercase">
+          Ingin Bergabung Menjadi Bagian dari <br/> <span class="text-red-200">Keluarga Al-Firmaunah?</span>
+        </h2>
+        <a href="/ppdb" class="bg-white text-red-600 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:bg-red-950 hover:text-white transition-all shadow-xl shadow-red-900/50">
+          Cek Info PPDB
+        </a>
+      </div>
+    </Container>
+  </section>
+
+</Layout>

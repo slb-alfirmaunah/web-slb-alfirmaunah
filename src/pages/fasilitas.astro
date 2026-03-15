@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/container.astro";
+import { getCollection } from 'astro:content';
+
+const semuaFasilitas = await getCollection('fasilitas');
+---
+
+<Layout title="Fasilitas Sekolah | SLB Al-Firmaunah" isHome={false}>
+  
+  <header class="pt-28 pb-16 bg-red-950 text-white relative overflow-hidden border-b border-white/5">
+    <div class="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5"></div>
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-red-600 rounded-full blur-[120px] opacity-20"></div>
+    
+    <Container>
+      <div class="max-w-3xl relative z-10">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-[1px] w-8 bg-red-500"></div>
+          <span class="text-red-500 font-black tracking-[0.3em] uppercase text-[9px]">
+            Infrastructure
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-tight uppercase">
+          Lingkungan & <br/> <span class="text-red-600 italic">Fasilitas Belajar</span>
+        </h1>
+        <p class="mt-4 text-slate-400 text-xs max-w-lg leading-relaxed font-medium">
+          Dukungan sarana prasarana yang dirancang khusus untuk menunjang perkembangan sensorik dan motorik setiap peserta didik di SLB Al-Firmaunah.
+        </p>
+      </div>
+    </Container>
+  </header>
+
+  <section class="py-12 bg-white">
+    <Container>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {semuaFasilitas.map((item, index) => (
+          <div class="group flex flex-col bg-white border border-slate-100 rounded-xl overflow-hidden hover:border-red-600/20 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-red-900/5">
+            <div class="aspect-video w-full overflow-hidden bg-slate-100 relative">
+              <img 
+                src={item.data.gambar} 
+                alt={item.data.nama} 
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div class="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="text-base font-black text-slate-900 uppercase tracking-tight group-hover:text-red-600 transition-colors">
+                  {item.data.nama}
+                </h3>
+                <span class="text-[8px] font-black text-slate-300 uppercase tracking-tighter">
+                   #{String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <div class="h-1 w-6 bg-red-600 mb-4 rounded-full group-hover:w-12 transition-all duration-500"></div>
+              <p class="text-[11px] text-slate-500 leading-relaxed font-medium italic">
+                {item.data.deskripsi}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <section class="py-10 bg-red-600/[0.02] border-t border-red-600/5">
+    <Container>
+      <div class="bg-red-950 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5"></div>
+        <div class="relative z-10 text-center md:text-left">
+          <h2 class="text-xl font-black text-white tracking-tight uppercase">Ingin Survey Lokasi?</h2>
+          <p class="text-red-400 text-[10px] font-bold uppercase tracking-widest mt-1">Hubungi kami untuk jadwal kunjungan langsung</p>
+        </div>
+        <a href="/ppdb" class="relative z-10 bg-white text-red-600 px-8 py-4 rounded-xl font-black uppercase tracking-widest text-[9px] hover:bg-red-600 hover:text-white transition-all shadow-lg active:scale-95">
+          Jadwalkan Kunjungan →
+        </a>
+      </div>
+    </Container>
+  </section>
+</Layout>
