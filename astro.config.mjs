@@ -8,6 +8,10 @@ import keystatic from '@keystatic/astro';
 import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
+  // --- TAMBAHKAN BARIS INI (SANGAT KRUSIAL) ---
+  site: 'https://slbalfirmaunah.com',
+  // --------------------------------------------
+
   integrations: [
     tailwind(),
     react(), // INI WAJIB ADA AGAR DASHBOARD BISA DIBUKA
