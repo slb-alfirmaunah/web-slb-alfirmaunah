@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-import react from '@astrojs/react'; // MESIN UTAMA KEYSTATIC
+import react from '@astrojs/react'; 
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 
-// --- IMPORT ADAPTER VERCEL ---
-import vercel from '@astrojs/vercel/serverless';
+// --- IMPORT ADAPTER VERCEL YANG BARU ---
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   // --- IDENTITAS DOMAIN ---
@@ -14,12 +14,12 @@ export default defineConfig({
 
   integrations: [
     tailwind(),
-    react(), // INI WAJIB ADA AGAR DASHBOARD BISA DIBUKA
+    react(), 
     markdoc(),
     keystatic(),
   ],
   
-  // --- MUTASI ARSITEKTUR KE HYBRID (CRITICAL FIX) ---
-  output: 'hybrid',
+  // --- MUTASI KE STATIC (STANDAR ASTRO 5) ---
+  output: 'static',
   adapter: vercel(),
 });
