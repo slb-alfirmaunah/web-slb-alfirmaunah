@@ -21,7 +21,16 @@ export default config({
         tanggal: fields.date({ label: 'Tanggal Publikasi' }),
         kategori: fields.text({ label: 'Kategori' }),
         deskripsi: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
-        gambar: fields.text({ label: 'URL Gambar' }), 
+        
+        // --- MUTASI DISINI: DARI fields.text MENJADI fields.image ---
+        gambar: fields.image({
+          label: 'Foto Cover Berita',
+          directory: 'public/images/berita', // Lokasi fisik file disimpan di repo
+          publicPath: '/images/berita/',      // Path yang ditulis di Markdown untuk Astro
+          validation: { isRequired: true }   // Mewajibkan upload gambar
+        }),
+        // -----------------------------------------------------------
+        
         konten: fields.document({ label: 'Isi Artikel', formatting: true }),
       },
     }),
