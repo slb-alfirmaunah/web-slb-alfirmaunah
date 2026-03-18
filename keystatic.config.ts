@@ -1,14 +1,15 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  // --- MENGUBAH MODE LOKAL KE CLOUD (GITHUB) ---
+  // --- AKTIVASI MODE CLOUD (ANTI-BUG VERCEL) ---
   storage: { 
-    kind: 'github',
-    // REVISI TARGET REPOSITORI KE AKUN BARU
-    repo: 'slb-alfirmaunah/web-slb-alfirmaunah'
+    kind: 'cloud',
   },
-  // ---------------------------------------------
-  
+  cloud: {
+    project: 'slb-alfirmaunah/web-slb-alfirmaunah', 
+  },
+  // ----------------------------------------------
+
   collections: {
     berita: collection({
       label: 'Berita',
@@ -59,14 +60,7 @@ export default config({
       schema: {
         nama: fields.slug({ name: { label: 'Nama Lengkap (beserta gelar)' } }),
         jabatan: fields.text({ label: 'Mata Pelajaran / Jabatan' }),
-        
-        // --- PENAMBAHAN FIELD PENDIDIKAN ---
-        pendidikan: fields.text({ 
-          label: 'Riwayat Pendidikan', 
-          description: 'Contoh: S1 Pendidikan Luar Biasa (UM)' 
-        }),
-        // -----------------------------------
-
+        pendidikan: fields.text({ label: 'Riwayat Pendidikan' }),
         nip: fields.text({ label: 'NIP (Opsional)' }),
         foto: fields.image({
           label: 'Foto Profil Guru',
@@ -113,8 +107,6 @@ export default config({
         }),
       },
     }),
-    
-    // --- MENGEMBALIKAN FITUR GALERI VIDEO ---
     galeriVideo: collection({
       label: 'Galeri Video',
       slugField: 'judul',
@@ -123,14 +115,10 @@ export default config({
       schema: {
         judul: fields.slug({ name: { label: 'Judul Video' } }),
         tanggal: fields.date({ label: 'Tanggal Publikasi' }),
-        youtubeId: fields.text({ 
-          label: 'ID Video YouTube', 
-          description: 'Contoh: Jika link video adalah https://www.youtube.com/watch?v=dQw4w9WgXcQ, maka masukkan HANYA kodenya saja: dQw4w9WgXcQ' 
-        }),
+        youtubeId: fields.text({ label: 'ID Video YouTube' }),
         deskripsi: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
       },
     }),
-    // ----------------------------------------
   },
   singletons: {
     profilSekolah: singleton({
@@ -148,7 +136,7 @@ export default config({
         visi: fields.text({ label: 'Visi Sekolah', multiline: true }),
         misi: fields.array(fields.object({ teks: fields.text({ label: 'Poin Misi' }) }), {
           label: 'Misi Sekolah',
-          itemLabel: (props) => props?.fields?.teks?.value || 'Poin Misi',
+          itemLabel: (p) => p.fields.teks.value || 'Poin Misi',
         }),
         sejarah: fields.document({ label: 'Sejarah', formatting: true }),
       },
@@ -160,50 +148,16 @@ export default config({
       schema: {
         judulTahunAjaran: fields.text({ label: 'Judul Tahun Ajaran', defaultValue: 'Tahun Ajaran 2026/2027' }),
         posterTahunan: fields.image({
-          label: 'Brosur PPDB (Portrait 1080x1920)',
+          label: 'Brosur PPDB',
           directory: 'public/images/ppdb',
           publicPath: '/images/ppdb/',
         }),
-        
-        brosurPdf: fields.file({
-          label: 'File Brosur PDF (Opsional)',
-          description: 'Upload berkas brosur dalam format PDF agar bisa diunduh wali murid',
-          directory: 'public/files/ppdb',
-          publicPath: '/files/ppdb/',
-        }),
-
-        syarat: fields.array(
-          fields.object({
-            teks: fields.text({ label: 'Nama Syarat' }),
-            catatan: fields.text({ label: 'Catatan (Opsional)', description: 'Contoh: Lampirkan jika ada' }),
-          }),
-          { 
-            label: 'Persyaratan Administrasi', 
-            itemLabel: (p) => p.fields.teks.value || 'Syarat Baru' 
-          }
-        ),
-        alur: fields.array(
-          fields.object({
-            judul: fields.text({ label: 'Judul Langkah' }),
-            deskripsi: fields.text({ label: 'Deskripsi', multiline: true }),
-          }),
-          { 
-            label: 'Alur Pendaftaran', 
-            itemLabel: (p) => p.fields.judul.value || 'Langkah Baru' 
-          }
-        ),
-        whatsappNumber: fields.text({ 
-          label: 'No WhatsApp Admin', 
-          defaultValue: '628',
-          description: 'Awali dengan 62 (Contoh: 6281234567890)'
-        }),
-        pesanWA: fields.text({ 
-          label: 'Isi Pesan WA', 
-          multiline: true,
-          defaultValue: 'Halo Admin SLB Al-Firmaunah, saya ingin menanyakan informasi pendaftaran siswa baru.'
-        }),
-        jadwalHari: fields.text({ label: 'Hari Pelayanan', defaultValue: "Senin - Jum'at" }),
-        jadwalJam: fields.text({ label: 'Jam Pelayanan', defaultValue: '07.00 - 15.00' }),
+        syarat: fields.array(fields.object({ teks: fields.text({ label: 'Syarat' }) }), { label: 'Syarat', itemLabel: (p) => p.fields.teks.value || 'Syarat' }),
+        alur: fields.array(fields.object({ judul: fields.text({ label: 'Judul' }), deskripsi: fields.text({ label: 'Deskripsi' }) }), { label: 'Alur', itemLabel: (p) => p.fields.judul.value || 'Langkah' }),
+        whatsappNumber: fields.text({ label: 'WhatsApp', defaultValue: '628' }),
+        pesanWA: fields.text({ label: 'Pesan WA' }),
+        jadwalHari: fields.text({ label: 'Hari' }),
+        jadwalJam: fields.text({ label: 'Jam' }),
       }
     }),
   },
