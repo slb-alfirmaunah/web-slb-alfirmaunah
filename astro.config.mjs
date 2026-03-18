@@ -8,9 +8,9 @@ import keystatic from '@keystatic/astro';
 import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
-  // --- TAMBAHKAN BARIS INI (SANGAT KRUSIAL) ---
+  // --- IDENTITAS DOMAIN ---
   site: 'https://slbalfirmaunah.com',
-  // --------------------------------------------
+  // ------------------------
 
   integrations: [
     tailwind(),
@@ -19,7 +19,7 @@ export default defineConfig({
     keystatic(),
   ],
   
-  // --- KONFIGURASI SERVER VERCEL ---
-  output: 'server',
+  // --- MUTASI ARSITEKTUR KE HYBRID (CRITICAL FIX) ---
+  output: 'hybrid',
   adapter: vercel(),
 });
