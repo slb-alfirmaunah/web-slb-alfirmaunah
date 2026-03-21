@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+
+// 1. Mengambil data dengan mode paksa (mencegah crash jika folder belum ada)
+let semuaVideo = [];
+try {
+  semuaVideo = await getCollection('galeriVideo') || [];
+} catch (error) {
+  console.log("Koleksi galeriVideo belum terdaftar atau kosong.");
+}
+
+const videoDiurutkan = semuaVideo.sort((a, b) => 
+  new Date(b.data?.tanggal || new Date()).valueOf() - new Date(a.data?.tanggal || new Date()).valueOf()
+);
+
+const adaVideo = videoDiurutkan.length > 0;
+const videoUtama = adaVideo ? videoDiurutkan[0] : null;
+---
+
+<section class="max-w-6xl mx-auto py-16 px-4 border-4 border-dashed border-red-500 bg-slate-50">
+  <div class="text-center mb-10">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Galeri Video Kegiatan</h2>
+    <p class="text-gray-600 mt-2">Dokumentasi aktivitas dan program SLB Al-Firmaunah</p>
+    
+    <div class="mt-4 inline-block px-4 py-2 bg-black text-white font-mono text-sm font-bold rounded">
+      STATUS MESIN: {adaVideo ? `BERHASIL MEMBACA ${semuaVideo.length} VIDEO` : "KOSONG (NOL DATA VIDEO DITEMUKAN)"}
+    </div>
+  </div>
+
+  {!adaVideo && (
+    <div class="bg-red-100 text-red-800 p-8 rounded-xl text-center border-2 border-red-300">
+      <h3 class="font-bold text-xl mb-2">⚠ KODE BERHASIL TERPASANG, TAPI DATA KOSONG</h3>
+      <p>Jika Anda melihat kotak merah ini, artinya kode kita di Astro <b>SUDAH BERHASIL</b> masuk ke halaman depan.</p>
+      <p class="mt-2">Penyebab video tidak muncul adalah karena mesin Astro mendeteksi <b>0 (Nol) entri video</b> dari Keystatic. Silakan login ke dashboard Keystatic dan tambahkan minimal 1 ID Youtube.</p>
+    </div>
+  )}
+
+  {adaVideo && (
+    <div class="flex flex-col lg:flex-row gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <div class="lg:w-2/3 flex flex-col">
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-md bg-gray-900">
+          <iframe
+            id="main-video-player"
+            class="absolute top-0 left-0 w-full h-full"
+            src={`https://www.youtube.com/embed/${videoUtama.data.youtubeId}?rel=0`}
+            title={videoUtama.data.judul}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="mt-4 px-2">
+          <h3 id="main-video-title" class="text-2xl font-bold text-gray-800">{videoUtama.data.judul}</h3>
+          <p id="main-video-desc" class="text-gray-600 mt-2 text-sm leading-relaxed">{videoUtama.data.deskripsi}</p>
+        </div>
+      </div>
+
+      <div class="lg:w-1/3 flex flex-col gap-3 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
+        {videoDiurutkan.map((video) => (
+          <button
+            class="video-thumbnail flex gap-3 text-left hover:bg-gray-50 p-2 rounded-xl transition-all border border-transparent hover:border-gray-200"
+            data-id={video.data.youtubeId}
+            data-title={video.data.judul}
+            data-desc={video.data.deskripsi}
+          >
+            <div class="w-32 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200 relative">
+              <img
+                src={`https://img.youtube.com/vi/${video.data.youtubeId}/mqdefault.jpg`}
+                alt={video.data.judul}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div class="flex flex-col justify-center">
+              <h4 class="font-semibold text-gray-800 text-sm line-clamp-2 leading-snug">{video.data.judul}</h4>
+              <span class="text-xs text-gray-500 mt-1">{new Date(video.data.tanggal).toLocaleDateString('id-ID')}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const thumbnails = document.querySelectorAll('.video-thumbnail');
+    const mainPlayer = document.getElementById('main-video-player');
+    const mainTitle = document.getElementById('main-video-title');
+    const mainDesc = document.getElementById('main-video-desc');
+
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        if (mainPlayer && mainTitle && mainDesc) {
+          mainPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+          mainTitle.textContent = this.getAttribute('data-title');
+          mainDesc.textContent = this.getAttribute('data-desc');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+</style>
