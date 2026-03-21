@@ -5,6 +5,10 @@ import Hero from "../components/hero.astro";
 import Sambutan from "../components/sambutan.astro";
 import BeritaTerbaru from "../components/berita-terbaru.astro";
 
+// --- INJEKSI KOMPONEN VIDEO ---
+import GaleriVideo from "../components/GaleriVideo.astro";
+// ------------------------------
+
 // 1. DATA FETCHING
 import { getCollection } from 'astro:content';
 import { createReader } from '@keystatic/core/reader';
@@ -23,8 +27,7 @@ const semuaTestimoni = await getCollection('testimoni');
 const semuaFasilitas = await getCollection('fasilitas');
 ---
 
-<Layout title="Beranda | SLB Al-Firmaunah" isHome={true}>
-  <Hero />
+<Layout title="Beranda | SLB Al Firma'unah" isHome={true}>
 
   <section class="py-12 bg-white">
     <Container>
@@ -144,6 +147,7 @@ const semuaFasilitas = await getCollection('fasilitas');
     </Container>
   </section>
 
+  <GaleriVideo />
   <section class="py-16 bg-white">
     <Container>
       <div class="flex flex-col items-center text-center mb-10">
