@@ -169,5 +169,32 @@ export default config({
         jadwalJam: fields.text({ label: 'Jam' }),
       }
     }),
+    // --- INJEKSI PENGATURAN FOOTER & MAPS ---
+    pengaturanWebsite: singleton({
+      label: 'Pengaturan Footer & Kontak',
+      path: 'src/content/pengaturan/website',
+      format: { data: 'json' },
+      schema: {
+        deskripsiSingkat: fields.text({ 
+          label: 'Deskripsi Singkat Footer', 
+          multiline: true,
+          defaultValue: 'Mendidik dengan hati, membangun generasi mandiri dan berkarakter.'
+        }),
+        alamat: fields.text({ 
+          label: 'Alamat Lengkap', 
+          multiline: true 
+        }),
+        telepon: fields.text({ label: 'Nomor Telepon / WhatsApp (Format: +62...)' }),
+        email: fields.text({ label: 'Email Sekolah' }),
+        linkGoogleMap: fields.text({
+          label: 'Link Embed Google Maps',
+          description: 'Hanya masukkan URL (link) dari bagian src="..." saat Anda mengcopy embed code dari Google Maps.',
+        }),
+        facebook: fields.text({ label: 'Link Facebook (Opsional)' }),
+        instagram: fields.text({ label: 'Link Instagram (Opsional)' }),
+        youtube: fields.text({ label: 'Link YouTube (Opsional)' }),
+      },
+    }),
+    // ----------------------------------------
   },
 });
