@@ -38,7 +38,7 @@
             </svg>
           </button>
           
-          <div id="profil-dropdown-content" class="hidden lg:absolute left-0 lg:mt-2 lg:w-56 bg-slate-50 lg:bg-white rounded-2xl lg:shadow-xl lg:opacity-0 lg:invisible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-300 transform lg:translate-y-4 lg:group-hover:translate-y-0 overflow-hidden normal-case lg:border border-slate-100 mt-4 lg:mt-0">
+          <div id="profil-dropdown-content" class="hidden lg:block lg:absolute left-0 lg:mt-2 lg:w-56 bg-slate-50 lg:bg-white rounded-2xl lg:shadow-xl lg:opacity-0 lg:invisible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-300 transform lg:translate-y-4 lg:group-hover:translate-y-0 overflow-hidden normal-case lg:border border-slate-100 mt-4 lg:mt-0">
             <a href="/profil/sekolah" class="block px-5 py-3 lg:py-3.5 text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold">Identitas Sekolah</a>
             <a href="/profil/guru" class="block px-5 py-3 lg:py-3.5 text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 transition-colors lg:border-t border-slate-50 font-semibold">Daftar Guru & Staf</a>
             <a href="/profil/siswa" class="block px-5 py-3 lg:py-3.5 text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 transition-colors lg:border-t border-slate-50 font-semibold">Data Peserta Didik</a>
@@ -84,7 +84,6 @@
     const isDesktop = window.innerWidth >= 1024;
 
     if (isScrolled) {
-      // 1. BACKGROUND JADI PUTIH
       nav.classList.add('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.remove('py-6', 'border-transparent');
       if (logoImg) logoImg.src = "/logo-dark.png";
@@ -95,11 +94,9 @@
       mobileBtn.classList.remove('text-white');
       mobileBtn.classList.add('text-slate-900');
 
-      // 2. TEKS MENU DIPAKSA GELAP
       navLinks.classList.remove('lg:text-white', 'text-white', 'text-slate-800');
       navLinks.classList.add('text-slate-700');
     } else {
-      // 1. BACKGROUND JADI TRANSPARAN
       nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.add('py-6', 'border-transparent');
       if (logoImg) logoImg.src = "/logo-white.png";
@@ -110,12 +107,11 @@
       mobileBtn.classList.remove('text-slate-900');
       mobileBtn.classList.add('text-white');
 
-      // 2. TEKS MENU KEMBALI TERANG (Desktop) ATAU GELAP (Mobile)
       navLinks.classList.remove('text-slate-700', 'text-slate-800', 'lg:text-white', 'text-white');
       if (isDesktop) {
-        navLinks.classList.add('lg:text-white'); // Putih di atas Banner
+        navLinks.classList.add('lg:text-white'); 
       } else {
-        navLinks.classList.add('text-slate-800'); // Gelap di dalam menu slide
+        navLinks.classList.add('text-slate-800'); 
       }
     }
   }
@@ -152,10 +148,14 @@
     }
   });
 
+  // PROTEKSI RESOLUSI: Mengembalikan dropdown ke state awal saat layar dibesarkan
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) {
       if (isMenuOpen) toggleMenu();
-      profilContent.classList.remove('hidden', 'block');
+      
+      // Mengunci kembali dropdown ke mode hover desktop
+      profilContent.classList.add('hidden');
+      profilContent.classList.remove('block');
       profilArrow.classList.remove('rotate-180');
     }
     updateNavColors();
