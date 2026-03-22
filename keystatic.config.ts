@@ -21,16 +21,12 @@ export default config({
         tanggal: fields.date({ label: 'Tanggal Publikasi' }),
         kategori: fields.text({ label: 'Kategori' }),
         deskripsi: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
-        
-        // --- MUTASI DISINI: DARI fields.text MENJADI fields.image ---
         gambar: fields.image({
           label: 'Foto Cover Berita',
-          directory: 'public/images/berita', // Lokasi fisik file disimpan di repo
-          publicPath: '/images/berita/',      // Path yang ditulis di Markdown untuk Astro
-          validation: { isRequired: true }   // Mewajibkan upload gambar
+          directory: 'public/images/berita',
+          publicPath: '/images/berita/',
+          validation: { isRequired: true }
         }),
-        // -----------------------------------------------------------
-        
         konten: fields.document({ label: 'Isi Artikel', formatting: true }),
       },
     }),
@@ -161,6 +157,14 @@ export default config({
           directory: 'public/images/ppdb',
           publicPath: '/images/ppdb/',
         }),
+        
+        // --- INJEKSI PERBAIKAN ERROR PPDB ---
+        brosurPdf: fields.text({ 
+          label: 'Link Download Brosur (PDF / Google Drive)',
+          description: 'Kosongkan jika tidak ada file PDF'
+        }),
+        // ------------------------------------
+        
         syarat: fields.array(fields.object({ teks: fields.text({ label: 'Syarat' }) }), { label: 'Syarat', itemLabel: (p) => p.fields.teks.value || 'Syarat' }),
         alur: fields.array(fields.object({ judul: fields.text({ label: 'Judul' }), deskripsi: fields.text({ label: 'Deskripsi' }) }), { label: 'Alur', itemLabel: (p) => p.fields.judul.value || 'Langkah' }),
         whatsappNumber: fields.text({ label: 'WhatsApp', defaultValue: '628' }),
@@ -169,7 +173,6 @@ export default config({
         jadwalJam: fields.text({ label: 'Jam' }),
       }
     }),
-    // --- INJEKSI PENGATURAN FOOTER & MAPS ---
     pengaturanWebsite: singleton({
       label: 'Pengaturan Footer & Kontak',
       path: 'src/content/pengaturan/website',
@@ -195,6 +198,5 @@ export default config({
         youtube: fields.text({ label: 'Link YouTube (Opsional)' }),
       },
     }),
-    // ----------------------------------------
   },
 });
