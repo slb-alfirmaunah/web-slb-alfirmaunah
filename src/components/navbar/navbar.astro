@@ -27,7 +27,7 @@
 
     <div id="nav-menu" class="fixed inset-x-0 top-0 bg-white lg:bg-transparent min-h-screen lg:min-h-0 pt-24 pb-8 px-6 lg:p-0 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 lg:static lg:transform-none transform -translate-y-full lg:translate-y-0 transition-transform duration-500 ease-in-out shadow-2xl lg:shadow-none border-b border-slate-100 lg:border-none z-40 lg:z-auto">
       
-      <div id="nav-links" class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 text-slate-800 lg:text-white font-bold uppercase text-lg lg:text-sm transition-colors duration-500">
+      <div id="nav-links" class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 text-white font-bold uppercase text-lg lg:text-sm transition-colors duration-500">
         <a href="/" class="hover:text-red-500 transition-colors w-full lg:w-auto">Beranda</a>
         
         <div class="relative group lg:py-4">
@@ -78,7 +78,7 @@
 
   let isMenuOpen = false;
 
-  // ENGINE PENGENDALI WARNA ABSOLUT
+  // ENGINE PENGENDALI WARNA (Bebas dari bug "lg:")
   function updateNavColors() {
     const isScrolled = window.scrollY > 50 || isMenuOpen;
     const isDesktop = window.innerWidth >= 1024;
@@ -94,7 +94,8 @@
       mobileBtn.classList.remove('text-white');
       mobileBtn.classList.add('text-slate-900');
 
-      navLinks.classList.remove('lg:text-white', 'text-white', 'text-slate-800');
+      // Teks Menu Mutlak Hitam/Gelap saat scroll/menu terbuka
+      navLinks.classList.remove('text-white', 'text-slate-800');
       navLinks.classList.add('text-slate-700');
     } else {
       nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
@@ -107,11 +108,14 @@
       mobileBtn.classList.remove('text-slate-900');
       mobileBtn.classList.add('text-white');
 
-      navLinks.classList.remove('text-slate-700', 'text-slate-800', 'lg:text-white', 'text-white');
+      // Transisi Desktop = Putih murni, Mobile = Gelap
+      navLinks.classList.remove('text-slate-700');
       if (isDesktop) {
-        navLinks.classList.add('lg:text-white'); 
+        navLinks.classList.remove('text-slate-800');
+        navLinks.classList.add('text-white');
       } else {
-        navLinks.classList.add('text-slate-800'); 
+        navLinks.classList.remove('text-white');
+        navLinks.classList.add('text-slate-800');
       }
     }
   }
@@ -148,12 +152,9 @@
     }
   });
 
-  // PROTEKSI RESOLUSI: Mengembalikan dropdown ke state awal saat layar dibesarkan
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) {
       if (isMenuOpen) toggleMenu();
-      
-      // Mengunci kembali dropdown ke mode hover desktop
       profilContent.classList.add('hidden');
       profilContent.classList.remove('block');
       profilArrow.classList.remove('rotate-180');
@@ -161,6 +162,6 @@
     updateNavColors();
   });
 
-  // Eksekusi Pengecekan Saat Halaman Pertama Dimuat
+  // Eksekusi Validasi Awal
   updateNavColors();
 </script>
