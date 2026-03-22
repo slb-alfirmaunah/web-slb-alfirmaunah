@@ -157,15 +157,21 @@ export default config({
           directory: 'public/images/ppdb',
           publicPath: '/images/ppdb/',
         }),
-        
-        // --- INJEKSI PERBAIKAN ERROR PPDB ---
         brosurPdf: fields.text({ 
           label: 'Link Download Brosur (PDF / Google Drive)',
           description: 'Kosongkan jika tidak ada file PDF'
         }),
-        // ------------------------------------
         
-        syarat: fields.array(fields.object({ teks: fields.text({ label: 'Syarat' }) }), { label: 'Syarat', itemLabel: (p) => p.fields.teks.value || 'Syarat' }),
+        // --- MUTASI SKEMA SYARAT (PENAMBAHAN LACI 'catatan') ---
+        syarat: fields.array(
+          fields.object({ 
+            teks: fields.text({ label: 'Syarat' }),
+            catatan: fields.text({ label: 'Catatan Tambahan (Opsional)' })
+          }), 
+          { label: 'Syarat', itemLabel: (p) => p.fields.teks.value || 'Syarat' }
+        ),
+        // ------------------------------------------------------
+        
         alur: fields.array(fields.object({ judul: fields.text({ label: 'Judul' }), deskripsi: fields.text({ label: 'Deskripsi' }) }), { label: 'Alur', itemLabel: (p) => p.fields.judul.value || 'Langkah' }),
         whatsappNumber: fields.text({ label: 'WhatsApp', defaultValue: '628' }),
         pesanWA: fields.text({ label: 'Pesan WA' }),
