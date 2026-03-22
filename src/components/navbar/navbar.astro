@@ -2,9 +2,9 @@
 // Navbar.astro
 ---
 <nav id="main-navbar" class="fixed top-0 w-full z-[100] transition-all duration-500 py-6 px-4 border-b border-transparent">
-  <div class="max-w-7xl mx-auto flex justify-between items-center">
+  <div class="max-w-7xl mx-auto flex justify-between items-center relative">
     
-    <a href="/" class="flex items-center gap-3 group">
+    <a href="/" class="flex items-center gap-3 group relative z-50">
       <img 
         id="logo-img" 
         src="/logo-white.png" 
@@ -13,77 +13,170 @@
         onerror="this.style.opacity='0'"
       />
       <div id="logo-text" class="text-white transition-colors duration-500">
-        <h1 class="font-black leading-none text-xl md:text-2xl uppercase">SLB Al-Firmaunah</h1>
+        <h1 class="font-black leading-none text-xl md:text-2xl uppercase tracking-tight">SLB Al-Firmaunah</h1>
         <p class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase opacity-80">Mendidik dengan Hati</p>
       </div>
     </a>
 
-    <div class="hidden lg:flex items-center gap-8">
+    <button id="mobile-menu-btn" class="lg:hidden relative z-50 p-2 text-white focus:outline-none transition-colors duration-500">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+        <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <div id="nav-menu" class="fixed inset-x-0 top-0 bg-white lg:bg-transparent min-h-screen lg:min-h-0 pt-24 pb-8 px-6 lg:p-0 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 lg:static lg:transform-none transform -translate-y-full lg:translate-y-0 transition-transform duration-500 ease-in-out shadow-2xl lg:shadow-none border-b border-slate-100 lg:border-none z-40 lg:z-auto">
       
-      <div id="nav-links" class="flex items-center gap-8 text-white font-bold uppercase text-sm transition-colors duration-500">
-        <a href="/" class="hover:text-red-500 transition-colors">Beranda</a>
+      <div id="nav-links" class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 text-slate-800 lg:text-white font-bold uppercase text-lg lg:text-sm transition-colors duration-500">
+        <a href="/" class="hover:text-red-500 transition-colors w-full lg:w-auto">Beranda</a>
         
-        <div class="relative group py-4">
-          <button class="hover:text-red-500 transition-colors uppercase font-bold flex items-center gap-1">
+        <div class="relative group lg:py-4">
+          <button id="profil-dropdown-btn" class="hover:text-red-500 transition-colors uppercase font-bold flex items-center justify-between lg:justify-start w-full lg:w-auto gap-1">
             Profil
-            <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg id="profil-arrow" class="w-5 h-5 lg:w-4 lg:h-4 transition-transform duration-300 lg:group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           
-          <div class="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 overflow-hidden text-slate-700 normal-case border border-slate-100">
-            <a href="/profil/sekolah" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors font-semibold">Identitas Sekolah</a>
-            <a href="/profil/guru" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors border-t border-slate-50 font-semibold">Daftar Guru & Staf</a>
-            <a href="/profil/siswa" class="block px-5 py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors border-t border-slate-50 font-semibold">Data Peserta Didik</a>
+          <div id="profil-dropdown-content" class="hidden lg:absolute left-0 lg:mt-2 lg:w-56 bg-slate-50 lg:bg-white rounded-2xl lg:shadow-xl lg:opacity-0 lg:invisible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-300 transform lg:translate-y-4 lg:group-hover:translate-y-0 overflow-hidden text-slate-700 normal-case lg:border border-slate-100 mt-4 lg:mt-0">
+            <a href="/profil/sekolah" class="block px-5 py-3 lg:py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors font-semibold">Identitas Sekolah</a>
+            <a href="/profil/guru" class="block px-5 py-3 lg:py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors lg:border-t border-slate-50 font-semibold">Daftar Guru & Staf</a>
+            <a href="/profil/siswa" class="block px-5 py-3 lg:py-3.5 text-sm hover:bg-red-50 hover:text-red-600 transition-colors lg:border-t border-slate-50 font-semibold">Data Peserta Didik</a>
           </div>
         </div>
 
-        <a href="/berita" class="hover:text-red-500 transition-colors">Berita</a>
-        <a href="/fasilitas" class="hover:text-red-500 transition-colors">Fasilitas</a>
-        <a href="/galeri" class="hover:text-red-500 transition-colors">Galeri</a>
+        <a href="/berita" class="hover:text-red-500 transition-colors w-full lg:w-auto">Berita</a>
+        <a href="/fasilitas" class="hover:text-red-500 transition-colors w-full lg:w-auto">Fasilitas</a>
+        <a href="/galeri" class="hover:text-red-500 transition-colors w-full lg:w-auto">Galeri</a>
       </div>
 
-      <a href="/ppdb" class="bg-red-600 hover:bg-red-700 text-white px-7 py-2.5 rounded-full font-black tracking-widest uppercase text-sm transition-all shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:-translate-y-0.5 border-2 border-transparent">
-        PPDB
-      </a>
+      <div class="mt-4 lg:mt-0 lg:border-l lg:border-white/20 lg:pl-8">
+        <a href="/ppdb" class="inline-block text-center w-full lg:w-auto bg-red-600 hover:bg-red-700 text-white px-7 py-3.5 lg:py-2.5 rounded-full font-black tracking-widest uppercase text-sm transition-all shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:-translate-y-0.5 border-2 border-transparent">
+          Portal PPDB
+        </a>
+      </div>
 
     </div>
   </div>
 </nav>
+
+<div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-30 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
 
 <script is:inline>
   const nav = document.querySelector('#main-navbar');
   const logoImg = document.querySelector('#logo-img');
   const logoText = document.querySelector('#logo-text');
   const navLinks = document.querySelector('#nav-links');
+  const mobileBtn = document.querySelector('#mobile-menu-btn');
+  const hamburgerIcon = document.querySelector('#hamburger-icon');
+  const closeIcon = document.querySelector('#close-icon');
+  const navMenu = document.querySelector('#nav-menu');
+  const mobileOverlay = document.querySelector('#mobile-overlay');
+  const profilBtn = document.querySelector('#profil-dropdown-btn');
+  const profilContent = document.querySelector('#profil-dropdown-content');
+  const profilArrow = document.querySelector('#profil-arrow');
 
+  let isMenuOpen = false;
+
+  // 1. SCROLL EFFECT (Desktop & Mobile)
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      // Aktifkan Mode Terang (Scrolled)
+    if (window.scrollY > 50 || isMenuOpen) {
+      // Aktifkan Mode Terang
       nav.classList.add('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.remove('py-6', 'border-transparent');
       
-      // Ganti Logo ke Dark
       if (logoImg) logoImg.src = "/logo-dark.png";
+      logoText.classList.replace('text-white', 'text-slate-900');
+      mobileBtn.classList.replace('text-white', 'text-slate-900');
       
-      logoText.classList.add('text-slate-900');
-      logoText.classList.remove('text-white');
-      
-      navLinks.classList.add('text-slate-700');
-      navLinks.classList.remove('text-white');
+      // Update text color hanya jika di mode desktop
+      if (window.innerWidth >= 1024) {
+        navLinks.classList.replace('text-white', 'text-slate-700');
+      }
     } else {
       // Kembali ke Mode Transparan (Top)
       nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.add('py-6', 'border-transparent');
       
-      // Ganti Logo ke White
       if (logoImg) logoImg.src = "/logo-white.png";
+      logoText.classList.replace('text-slate-900', 'text-white');
+      mobileBtn.classList.replace('text-slate-900', 'text-white');
       
-      logoText.classList.remove('text-slate-900');
-      logoText.classList.add('text-white');
-      
-      navLinks.classList.remove('text-slate-700');
-      navLinks.classList.add('text-white');
+      if (window.innerWidth >= 1024) {
+        navLinks.classList.replace('text-slate-700', 'text-white');
+      }
     }
   });
+
+  // 2. MOBILE MENU TOGGLE
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+    
+    // Toggle Ikon
+    hamburgerIcon.classList.toggle('hidden');
+    closeIcon.classList.toggle('hidden');
+    
+    // Toggle Menu Panel
+    if (isMenuOpen) {
+      navMenu.classList.remove('-translate-y-full');
+      mobileOverlay.classList.remove('hidden');
+      setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
+      
+      // Paksa Navbar jadi putih saat menu terbuka
+      nav.classList.add('bg-white', 'py-3', 'shadow-xl');
+      nav.classList.remove('py-6');
+      logoText.classList.replace('text-white', 'text-slate-900');
+      mobileBtn.classList.replace('text-white', 'text-slate-900');
+      if (logoImg) logoImg.src = "/logo-dark.png";
+    } else {
+      navMenu.classList.add('-translate-y-full');
+      mobileOverlay.classList.add('opacity-0');
+      setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+      
+      // Kembalikan Navbar ke kondisi awal jika sedang di posisi atas
+      if (window.scrollY <= 50) {
+        nav.classList.remove('bg-white', 'py-3', 'shadow-xl');
+        nav.classList.add('py-6');
+        logoText.classList.replace('text-slate-900', 'text-white');
+        mobileBtn.classList.replace('text-slate-900', 'text-white');
+        if (logoImg) logoImg.src = "/logo-white.png";
+      }
+    }
+  }
+
+  mobileBtn.addEventListener('click', toggleMenu);
+  mobileOverlay.addEventListener('click', toggleMenu);
+
+  // 3. MOBILE ACCORDION (Dropdown Profil)
+  profilBtn.addEventListener('click', (e) => {
+    if (window.innerWidth < 1024) { // Hanya aktif di Mobile
+      e.preventDefault();
+      profilContent.classList.toggle('hidden');
+      profilContent.classList.toggle('block');
+      profilArrow.classList.toggle('rotate-180');
+    }
+  });
+
+  // 4. RESET STATE SAAT RESIZE WINDOW
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024) {
+      // Bersihkan state mobile jika di-resize ke desktop
+      if (isMenuOpen) toggleMenu();
+      profilContent.classList.remove('hidden', 'block');
+      profilArrow.classList.remove('rotate-180');
+      if (window.scrollY <= 50) {
+        navLinks.classList.replace('text-slate-700', 'text-white');
+      } else {
+        navLinks.classList.replace('text-white', 'text-slate-700');
+      }
+    } else {
+      // Pastikan teks menu mobile selalu gelap
+      navLinks.classList.replace('text-white', 'text-slate-800');
+    }
+  });
+
+  // Inisialisasi awal
+  if (window.innerWidth < 1024) {
+    navLinks.classList.replace('text-white', 'text-slate-800');
+  }
 </script>
