@@ -78,78 +78,73 @@
 
   let isMenuOpen = false;
 
-  // 1. SCROLL EFFECT (Desktop & Mobile)
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50 || isMenuOpen) {
-      // Aktifkan Mode Terang
+  // ENGINE PENGENDALI WARNA ABSOLUT
+  function updateNavColors() {
+    const isScrolled = window.scrollY > 50 || isMenuOpen;
+    const isDesktop = window.innerWidth >= 1024;
+
+    if (isScrolled) {
+      // 1. BACKGROUND JADI PUTIH
       nav.classList.add('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.remove('py-6', 'border-transparent');
-      
       if (logoImg) logoImg.src = "/logo-dark.png";
-      logoText.classList.replace('text-white', 'text-slate-900');
-      mobileBtn.classList.replace('text-white', 'text-slate-900');
       
-      // Update text color hanya jika di mode desktop
-      if (window.innerWidth >= 1024) {
-        navLinks.classList.replace('text-white', 'text-slate-700');
-      }
+      logoText.classList.remove('text-white');
+      logoText.classList.add('text-slate-900');
+      
+      mobileBtn.classList.remove('text-white');
+      mobileBtn.classList.add('text-slate-900');
+
+      // 2. TEKS MENU DIPAKSA GELAP
+      navLinks.classList.remove('lg:text-white', 'text-white', 'text-slate-800');
+      navLinks.classList.add('text-slate-700');
     } else {
-      // Kembali ke Mode Transparan (Top)
+      // 1. BACKGROUND JADI TRANSPARAN
       nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.add('py-6', 'border-transparent');
-      
       if (logoImg) logoImg.src = "/logo-white.png";
-      logoText.classList.replace('text-slate-900', 'text-white');
-      mobileBtn.classList.replace('text-slate-900', 'text-white');
       
-      if (window.innerWidth >= 1024) {
-        navLinks.classList.replace('text-slate-700', 'text-white');
+      logoText.classList.remove('text-slate-900');
+      logoText.classList.add('text-white');
+      
+      mobileBtn.classList.remove('text-slate-900');
+      mobileBtn.classList.add('text-white');
+
+      // 2. TEKS MENU KEMBALI TERANG (Desktop) ATAU GELAP (Mobile)
+      navLinks.classList.remove('text-slate-700', 'text-slate-800', 'lg:text-white', 'text-white');
+      if (isDesktop) {
+        navLinks.classList.add('lg:text-white'); // Putih di atas Banner
+      } else {
+        navLinks.classList.add('text-slate-800'); // Gelap di dalam menu slide
       }
     }
-  });
+  }
 
-  // 2. MOBILE MENU TOGGLE
+  // EVENT LISTENERS
+  window.addEventListener('scroll', updateNavColors);
+
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
-    
-    // Toggle Ikon
     hamburgerIcon.classList.toggle('hidden');
     closeIcon.classList.toggle('hidden');
     
-    // Toggle Menu Panel
     if (isMenuOpen) {
       navMenu.classList.remove('-translate-y-full');
       mobileOverlay.classList.remove('hidden');
       setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
-      
-      // Paksa Navbar jadi putih saat menu terbuka
-      nav.classList.add('bg-white', 'py-3', 'shadow-xl');
-      nav.classList.remove('py-6');
-      logoText.classList.replace('text-white', 'text-slate-900');
-      mobileBtn.classList.replace('text-white', 'text-slate-900');
-      if (logoImg) logoImg.src = "/logo-dark.png";
     } else {
       navMenu.classList.add('-translate-y-full');
       mobileOverlay.classList.add('opacity-0');
       setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
-      
-      // Kembalikan Navbar ke kondisi awal jika sedang di posisi atas
-      if (window.scrollY <= 50) {
-        nav.classList.remove('bg-white', 'py-3', 'shadow-xl');
-        nav.classList.add('py-6');
-        logoText.classList.replace('text-slate-900', 'text-white');
-        mobileBtn.classList.replace('text-slate-900', 'text-white');
-        if (logoImg) logoImg.src = "/logo-white.png";
-      }
     }
+    updateNavColors();
   }
 
   mobileBtn.addEventListener('click', toggleMenu);
   mobileOverlay.addEventListener('click', toggleMenu);
 
-  // 3. MOBILE ACCORDION (Dropdown Profil)
   profilBtn.addEventListener('click', (e) => {
-    if (window.innerWidth < 1024) { // Hanya aktif di Mobile
+    if (window.innerWidth < 1024) { 
       e.preventDefault();
       profilContent.classList.toggle('hidden');
       profilContent.classList.toggle('block');
@@ -157,26 +152,15 @@
     }
   });
 
-  // 4. RESET STATE SAAT RESIZE WINDOW
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) {
-      // Bersihkan state mobile jika di-resize ke desktop
       if (isMenuOpen) toggleMenu();
       profilContent.classList.remove('hidden', 'block');
       profilArrow.classList.remove('rotate-180');
-      if (window.scrollY <= 50) {
-        navLinks.classList.replace('text-slate-700', 'text-white');
-      } else {
-        navLinks.classList.replace('text-white', 'text-slate-700');
-      }
-    } else {
-      // Pastikan teks menu mobile selalu gelap
-      navLinks.classList.replace('text-white', 'text-slate-800');
     }
+    updateNavColors();
   });
 
-  // Inisialisasi awal
-  if (window.innerWidth < 1024) {
-    navLinks.classList.replace('text-white', 'text-slate-800');
-  }
+  // Eksekusi Pengecekan Saat Halaman Pertama Dimuat
+  updateNavColors();
 </script>
