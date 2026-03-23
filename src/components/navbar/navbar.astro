@@ -27,11 +27,12 @@
 
     <div id="nav-menu" class="fixed inset-x-0 top-0 bg-white lg:bg-transparent min-h-screen lg:min-h-0 pt-24 pb-8 px-6 lg:p-0 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 lg:static lg:transform-none transform -translate-y-full lg:translate-y-0 transition-transform duration-500 ease-in-out shadow-2xl lg:shadow-none border-b border-slate-100 lg:border-none z-40 lg:z-auto">
       
-      <div id="nav-links" class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 text-white font-bold uppercase text-lg lg:text-sm transition-colors duration-500">
-        <a href="/" class="hover:text-red-500 transition-colors w-full lg:w-auto">Beranda</a>
+      <div id="nav-links" class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8 font-bold uppercase text-lg lg:text-sm">
+        
+        <a href="/" class="nav-item text-white hover:text-red-500 transition-colors duration-500 w-full lg:w-auto">Beranda</a>
         
         <div class="relative group lg:py-4">
-          <button id="profil-dropdown-btn" class="hover:text-red-500 transition-colors uppercase font-bold flex items-center justify-between lg:justify-start w-full lg:w-auto gap-1">
+          <button id="profil-dropdown-btn" class="nav-item text-white hover:text-red-500 transition-colors duration-500 uppercase font-bold flex items-center justify-between lg:justify-start w-full lg:w-auto gap-1">
             Profil
             <svg id="profil-arrow" class="w-5 h-5 lg:w-4 lg:h-4 transition-transform duration-300 lg:group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
@@ -45,9 +46,9 @@
           </div>
         </div>
 
-        <a href="/berita" class="hover:text-red-500 transition-colors w-full lg:w-auto">Berita</a>
-        <a href="/fasilitas" class="hover:text-red-500 transition-colors w-full lg:w-auto">Fasilitas</a>
-        <a href="/galeri" class="hover:text-red-500 transition-colors w-full lg:w-auto">Galeri</a>
+        <a href="/berita" class="nav-item text-white hover:text-red-500 transition-colors duration-500 w-full lg:w-auto">Berita</a>
+        <a href="/fasilitas" class="nav-item text-white hover:text-red-500 transition-colors duration-500 w-full lg:w-auto">Fasilitas</a>
+        <a href="/galeri" class="nav-item text-white hover:text-red-500 transition-colors duration-500 w-full lg:w-auto">Galeri</a>
       </div>
 
       <div class="mt-4 lg:mt-0 lg:border-l lg:border-white/20 lg:pl-8">
@@ -66,7 +67,10 @@
   const nav = document.querySelector('#main-navbar');
   const logoImg = document.querySelector('#logo-img');
   const logoText = document.querySelector('#logo-text');
-  const navLinks = document.querySelector('#nav-links');
+  
+  // MENGUMPULKAN SEMUA MENU SATU PER SATU
+  const navItems = document.querySelectorAll('.nav-item');
+  
   const mobileBtn = document.querySelector('#mobile-menu-btn');
   const hamburgerIcon = document.querySelector('#hamburger-icon');
   const closeIcon = document.querySelector('#close-icon');
@@ -78,7 +82,7 @@
 
   let isMenuOpen = false;
 
-  // ENGINE PENGENDALI WARNA (Bebas dari bug "lg:")
+  // ENGINE PENGENDALI WARNA (MANUAL OVERRIDE)
   function updateNavColors() {
     const isScrolled = window.scrollY > 50 || isMenuOpen;
     const isDesktop = window.innerWidth >= 1024;
@@ -94,9 +98,12 @@
       mobileBtn.classList.remove('text-white');
       mobileBtn.classList.add('text-slate-900');
 
-      // Teks Menu Mutlak Hitam/Gelap saat scroll/menu terbuka
-      navLinks.classList.remove('text-white', 'text-slate-800');
-      navLinks.classList.add('text-slate-700');
+      // PAKSA SEMUA MENU MENJADI GELAP
+      navItems.forEach(item => {
+        item.classList.remove('text-white', 'text-slate-800');
+        item.classList.add('text-slate-700');
+      });
+
     } else {
       nav.classList.remove('bg-white', 'py-3', 'shadow-xl', 'border-slate-100');
       nav.classList.add('py-6', 'border-transparent');
@@ -108,15 +115,17 @@
       mobileBtn.classList.remove('text-slate-900');
       mobileBtn.classList.add('text-white');
 
-      // Transisi Desktop = Putih murni, Mobile = Gelap
-      navLinks.classList.remove('text-slate-700');
-      if (isDesktop) {
-        navLinks.classList.remove('text-slate-800');
-        navLinks.classList.add('text-white');
-      } else {
-        navLinks.classList.remove('text-white');
-        navLinks.classList.add('text-slate-800');
-      }
+      // PAKSA MENU KEMBALI PUTIH (DESKTOP) ATAU GELAP (MOBILE)
+      navItems.forEach(item => {
+        item.classList.remove('text-slate-700');
+        if (isDesktop) {
+          item.classList.remove('text-slate-800');
+          item.classList.add('text-white');
+        } else {
+          item.classList.remove('text-white');
+          item.classList.add('text-slate-800');
+        }
+      });
     }
   }
 
@@ -162,6 +171,6 @@
     updateNavColors();
   });
 
-  // Eksekusi Validasi Awal
+  // Eksekusi Pengecekan Saat Halaman Pertama Dimuat
   updateNavColors();
 </script>
