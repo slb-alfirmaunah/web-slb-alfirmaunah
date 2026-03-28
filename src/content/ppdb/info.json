@@ -1,7 +1,7 @@
 {
   "judulTahunAjaran": "Tahun Ajaran 2026/2027",
   "posterTahunan": "/images/ppdb/posterTahunan.png",
-  "brosurPdf": "/files/ppdb/brosurPdf.pdf",
+  "brosurPdf": "https://drive.google.com/file/d/1GzKShnbzoCMNJ0SH9EnH9v4yP5lMMWSe/view?usp=sharing",
   "syarat": [
     {
       "teks": "tes1"
