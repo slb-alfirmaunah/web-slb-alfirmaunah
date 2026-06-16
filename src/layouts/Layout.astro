@@ -15,7 +15,7 @@ export interface Props {
 // 2. TANGKAP isHome dari Astro.props (Defaultnya false)
 const { title, isHome = false } = Astro.props;
 
-const siteUrl = Astro.site ? Astro.site.toString() : 'http://localhost:4321';
+const siteUrl = Astro.site ? Astro.site.toString() : 'https://www.slbalfirmaunah.com';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
 
 const resolvedImageWithDomain = new URL(
@@ -23,24 +23,28 @@ const resolvedImageWithDomain = new URL(
   siteUrl
 ).toString();
 
+// 3. MUTASI ABSOLUT: Mesin Pembuat Judul (SEO Title)
 const makeTitle = title
-  ? title + " | " + "SMAN 3 Malang"
-  : "SMAN 3 Malang - Kampus Bhawikarsu";
+  ? title + " | SLB Al-Firmaunah"
+  : "SLB Al-Firmaunah | Mendidik dengan Hati";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    
     <meta name="generator" content={Astro.generator} />
+    
     <SEO
       title={makeTitle}
-      description="Website Resmi SMA Negeri 3 Malang - Kampus Bhawikarsu."
+      description="Portal resmi SLB Al-Firmaunah. Lembaga pendidikan inklusif yang berdedikasi untuk memberikan layanan pembelajaran terbaik, membangun kemandirian, dan menggali potensi setiap peserta didik berkebutuhan khusus."
       canonical={canonicalURL}
       twitter={{
-        creator: "@sman3malang",
+        creator: "@slbalfirmaunah",
         card: "summary_large_image",
       }}
       openGraph={{
