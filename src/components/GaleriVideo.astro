@@ -6,6 +6,17 @@ import keystaticConfig from '../../keystatic.config';
 const reader = createReader(process.cwd(), keystaticConfig);
 let semuaVideo = [];
 
+// INJEKSI MUTLAK: Algoritma Pengekstrak ID YouTube
+function extractYouTubeID(input: string) {
+  if (!input) return '';
+  // Jika sudah berupa ID 11 karakter murni
+  if (input.length === 11 && !input.includes('http')) return input;
+  // Jika berupa URL utuh/pendek, ekstrak ID-nya
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = input.match(regex);
+  return match ? match[1] : input;
+}
+
 try {
   // Membaca paksa langsung ke folder data Keystatic
   const dataMentah = await reader.collections.galeriVideo.all();
@@ -25,7 +36,10 @@ const videoDiurutkan = semuaVideo.sort((a, b) =>
 
 const adaVideo = videoDiurutkan.length > 0;
 const videoUtama = adaVideo ? videoDiurutkan[0] : null;
-const safeIdUtama = videoUtama?.data?.youtubeId || '';
+
+// Terapkan ekstraktor pada video utama
+const rawIdUtama = videoUtama?.data?.youtubeId || '';
+const safeIdUtama = extractYouTubeID(rawIdUtama);
 ---
 
 {adaVideo && (
@@ -57,7 +71,10 @@ const safeIdUtama = videoUtama?.data?.youtubeId || '';
 
       <div class="lg:w-1/3 flex flex-col gap-3 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
         {videoDiurutkan.map((video) => {
-          const thumbId = video.data?.youtubeId || '';
+          // Terapkan ekstraktor pada setiap thumbnail video
+          const rawThumbId = video.data?.youtubeId || '';
+          const thumbId = extractYouTubeID(rawThumbId);
+          
           return (
             <button
               class="video-thumbnail flex gap-3 text-left hover:bg-gray-50 p-2 rounded-xl transition-all border border-transparent hover:border-gray-200 focus:outline-none"
